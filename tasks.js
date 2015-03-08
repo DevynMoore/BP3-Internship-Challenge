@@ -19,6 +19,7 @@ function loadJSONDocument(url, callback) {
 	request.send();
 }
 
+// Get all tasks which were either created on or closed on the given date
 function getTasksOnDate(date) {
 	if (!document.jsonLoaded)
 		throw "JSON must be loaded first";
@@ -41,6 +42,8 @@ function getTasksOnDate(date) {
 	return results;
 }
 
+// Get all tasks that were created or closed on or after the start date,
+// but before the end date
 function getTasksBetweenDates(startDate,endDate) {
 	if (!document.jsonLoaded)
 		throw "JSON must be loaded first";
@@ -63,6 +66,7 @@ function getTasksBetweenDates(startDate,endDate) {
 	return results;
 }
 
+// Get the number of tasks with the given instanceId
 function getTaskCount(instanceId) {
 	if (!document.jsonLoaded)
 		throw "JSON must be loaded first";
@@ -75,6 +79,7 @@ function getTaskCount(instanceId) {
 	return count;
 }
 
+// Get the name of the most recently created task with the given instance Id
 function getMostRecentTask(instanceId) {
 	if (!document.jsonLoaded)
 		throw "JSON must be loaded first";
