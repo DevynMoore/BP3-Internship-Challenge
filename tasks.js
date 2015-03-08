@@ -19,51 +19,56 @@ function loadJSONDocument(url, callback) {
 	request.send();
 }
 
-// Get all tasks which were either created on or closed on the given date
-function getTasksOnDate(date) {
+// Get how many tasks that were created or closed on or after the start date,
+// but before the end date
+// Returns an object with two properties: opened and closed, containing the 
+// number of tasks opened or closed
+function getTaskCountBetweenDates(startDate,endDate) {
 	if (!document.jsonLoaded)
 		throw "JSON must be loaded first";
-	results = [];
+	results = {
+		opened: 0,
+		closed: 0
+	};
 	for (index = 0; index < document.jsonData.length; index++) {
 		task = document.jsonData[index];
 		createDate = new Date(task.createDate);
-		if (createDate.setUTCHours(0,0,0,0) == date.setUTCHours(0,0,0,0))
+		if ((createDate.setUTCHours(0,0,0,0) >= startDate.setUTCHours(0,0,0,0)) && (createDate.setUTCHours(0,0,0,0) < endDate.setUTCHours(0,0,0,0)))
 		{
-			results.push(task);
+			results.opened++;
 		}
-		else if (task.closeDate){
+		if (task.closeDate){
 			closeDate = new Date(task.closeDate);
-			if (closeDate.setUTCHours(0,0,0,0) == date.setUTCHours(0,0,0,0))
+			if ((closeDate.setUTCHours(0,0,0,0) >= startDate.setUTCHours(0,0,0,0)) && (closeDate.setUTCHours(0,0,0,0) < endDate.setUTCHours(0,0,0,0)))
 			{
-				results.push(task);
+				results.closed++;
 			}
 		}
 	}
 	return results;
 }
 
-// Get all tasks that were created or closed on or after the start date,
-// but before the end date
-function getTasksBetweenDates(startDate,endDate) {
-	if (!document.jsonLoaded)
-		throw "JSON must be loaded first";
-	results = [];
+// Get the number of open and closed tasks on a given date
+function getTaskCountOnDate(date) {
+	result = {
+		opened: 0,
+		closed: 0
+	};
 	for (index = 0; index < document.jsonData.length; index++) {
 		task = document.jsonData[index];
 		createDate = new Date(task.createDate);
-		if ((createDate.setUTCHours(0,0,0,0) >= startDate.setUTCHours(0,0,0,0)) && (createDate.setUTCHours(0,0,0,0) < endDate.setUTCHours(0,0,0,0)))
-		{
-			results.push(task);
+		if (task.closeDate && new Date(task.closeDate).setUTCHours(0,0,0,0) <= date.setUTCHours(0,0,0,0)) {
+			// If task was closed on or before given date, count as closed
+			result.closed++;
 		}
-		else if (task.closeDate){
-			closeDate = new Date(task.closeDate);
-			if ((closeDate.setUTCHours(0,0,0,0) >= startDate.setUTCHours(0,0,0,0)) && (closeDate.setUTCHours(0,0,0,0) < endDate.setUTCHours(0,0,0,0)))
-			{
-				results.push(task);
-			}
+		else if (new Date(task.createDate).setUTCHours(0,0,0,0) <= date.setUTCHours(0,0,0,0)) {
+			// If task was created on or before given date, 
+			// but has not been closed yet, count as open
+			result.opened++;
 		}
 	}
-	return results;
+
+	return result;
 }
 
 // Get the number of tasks with the given instanceId
