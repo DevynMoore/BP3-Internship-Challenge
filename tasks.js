@@ -4,13 +4,15 @@ document.jsonLoaded = false;
 // Fetch a JSON document from the specified URL
 // then parse it and store it in document.jsonData.
 // Set document.jsonLoaded to true when finished
-function loadJSONDocument(url) {
+function loadJSONDocument(url, callback) {
 	request = new XMLHttpRequest();
 	request.onreadystatechange=function() {
 		if (request.readyState==4 && request.status==200) {
 			response = request.responseText;
 			document.jsonData = JSON.parse(response);
 			document.jsonLoaded = true;
+			if (callback)
+				callback();
 		}	
 	}
 	request.open("GET",url,true);
