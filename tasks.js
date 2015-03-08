@@ -24,13 +24,13 @@ function getTasksOnDate(date) {
 	for (index = 0; index < document.jsonData.length; index++) {
 		task = document.jsonData[index];
 		createDate = new Date(task.createDate);
-		if (createDate.getUTCFullYear() == date.getUTCFullYear() && createDate.getUTCMonth() == date.getUTCMonth() && createDate.getUTCDate() == date.getUTCDate())
+		if (createDate.setUTCHours(0,0,0,0) == date.setUTCHours(0,0,0,0))
 		{
 			results.push(task);
 		}
 		else if (task.closeDate){
 			closeDate = new Date(task.closeDate);
-			if (closeDate.getUTCFullYear() == date.getUTCFullYear() && closeDate.getUTCMonth() == date.getUTCMonth() && closeDate.getUTCDate() == date.getUTCDate())
+			if (closeDate.setUTCHours(0,0,0,0) == date.setUTCHours(0,0,0,0))
 			{
 				results.push(task);
 			}
@@ -57,4 +57,32 @@ function getTasksBetweenDates(startDate,endDate) {
 		}
 	}
 	return results;
+}
+
+function getTaskCount(instanceId) {
+	count = 0;
+	for (index = 0; index < document.jsonData.length; index++) {
+		task = document.jsonData[index];
+		if (task.instanceId == instanceId)
+			count++;
+	}
+	return count;
+}
+
+function getMostRecentTask(instanceId) {
+	name = null;
+	mostRecent = 0;
+	for (index = 0; index < document.jsonData.length; index++) {
+		task = document.jsonData[index];
+		if (task.instanceId == instanceId)
+		{
+			createDate = new Date(task.createDate);
+			if (createDate > mostRecent)
+			{
+				mostRecent = createDate;
+				name = task.name;
+			}
+		}
+	}
+	return name;
 }
