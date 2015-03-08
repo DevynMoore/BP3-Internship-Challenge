@@ -18,3 +18,23 @@ function loadJSONDocument(url, callback) {
 	request.open("GET",url,true);
 	request.send();
 }
+
+function getTasksOnDate(date) {
+	results = [];
+	for (index = 0; index < document.jsonData.length; index++) {
+		task = document.jsonData[index];
+		createDate = new Date(task.createDate);
+		if (createDate.getUTCFullYear() == date.getUTCFullYear() && createDate.getUTCMonth() == date.getUTCMonth() && createDate.getUTCDate() == date.getUTCDate())
+		{
+			results.push(task);
+		}
+		else if (task.closeDate){
+			closeDate = new Date(task.closeDate);
+			if (closeDate.getUTCFullYear() == date.getUTCFullYear() && closeDate.getUTCMonth() == date.getUTCMonth() && closeDate.getUTCDate() == date.getUTCDate())
+			{
+				results.push(task);
+			}
+		}
+	}
+	return results;
+}

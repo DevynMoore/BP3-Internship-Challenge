@@ -3,7 +3,11 @@
 <script src="tasks.js"></script>
 <script type="text/javascript">
 	loadJSONDocument("task.json",function(){
-		
+		tasks = getTasksOnDate(new Date(Date.UTC(2014,11,21)));
+		for (index = 0; index < tasks.length; index++) {
+			console.log(tasks[index].id)
+			console.log("     " + tasks[index].createDate + " ----- " + tasks[index].closeDate);
+		}
 	});
 </script>
 </head>
