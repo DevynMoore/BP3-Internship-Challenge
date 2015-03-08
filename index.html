@@ -3,14 +3,55 @@
 <script src="tasks.js"></script>
 <script type="text/javascript">
 	loadJSONDocument("task.json",function(){
-		tasks = getTasksOnDate(new Date(Date.UTC(2014,11,21)));
-		for (index = 0; index < tasks.length; index++) {
-			console.log(tasks[index].id)
-			console.log("     " + tasks[index].createDate + " ----- " + tasks[index].closeDate);
-		}
+		onDate = getTaskCountOnDate(new Date(Date.UTC(2015,0,1)));
+		appendTextToList(document.getElementById("on-date"),onDate.opened + " Open Tasks");
+		appendTextToList(document.getElementById("on-date"),onDate.closed + " Closed Tasks");
+
+		onDate = getTaskCountOnDate(new Date(Date.UTC(2015,1,18)));
+		appendTextToList(document.getElementById("on-date-2"),onDate.opened + " Open Tasks");
+		appendTextToList(document.getElementById("on-date-2"),onDate.closed + " Closed Tasks");
+
+		betweenDate = getTaskCountBetweenDates(new Date(Date.UTC(2015,0,1)), new Date(Date.UTC(2015,0,10)));
+		appendTextToList(document.getElementById("between-date"),betweenDate.opened + " Tasks Opened");
+		appendTextToList(document.getElementById("between-date"),betweenDate.closed + " Tasks Closed");
+
+		betweenDate = getTaskCountBetweenDates(new Date(Date.UTC(2014,9,1)), new Date(Date.UTC(2015,1,28)));
+		appendTextToList(document.getElementById("between-date-2"),betweenDate.opened + " Tasks Opened");
+		appendTextToList(document.getElementById("between-date-2"),betweenDate.closed + " Tasks Closed");
+
+		mostRecent = getMostRecentTask(485);
+		appendTextToList(document.getElementById("most-recent"),mostRecent);
+
+		taskCount = getTaskCount(485);
+		appendTextToList(document.getElementById("task-count"),taskCount);
 	});
+
+	function appendTextToList(ul, text) {
+		var li = document.createElement("li");
+		li.appendChild(document.createTextNode(text));
+		ul.appendChild(li);
+	}
 </script>
 </head>
 <body>
+	<strong>On January 1, 2015 </strong>
+	<ul id="on-date">
+	</ul>
+	<hr />
+	<strong>On February 18, 2015 </strong>
+	<ul id="on-date-2">
+	</ul>
+	<hr />
+	<strong> All tasks between January 1, 2015 (inclusive) and January 10, 2015 (exclusive)</strong>
+	<ul id="between-date"></ul>
+	<hr />
+	<strong> All tasks between October 1, 2014 (inclusive) and February 28, 2015 (exclusive)</strong>
+	<ul id="between-date-2"></ul>
+	<hr />
+	<strong> Most recent task for instanceID 485</strong>
+	<ul id="most-recent"></ul>
+	<hr />
+	<strong> Total tasks for instanceID 485</strong>
+	<ul id="task-count"></ul>
 </body>
 </html>
