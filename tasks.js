@@ -20,6 +20,8 @@ function loadJSONDocument(url, callback) {
 }
 
 function getTasksOnDate(date) {
+	if (!document.jsonLoaded)
+		throw "JSON must be loaded first";
 	results = [];
 	for (index = 0; index < document.jsonData.length; index++) {
 		task = document.jsonData[index];
@@ -40,6 +42,8 @@ function getTasksOnDate(date) {
 }
 
 function getTasksBetweenDates(startDate,endDate) {
+	if (!document.jsonLoaded)
+		throw "JSON must be loaded first";
 	results = [];
 	for (index = 0; index < document.jsonData.length; index++) {
 		task = document.jsonData[index];
@@ -60,6 +64,8 @@ function getTasksBetweenDates(startDate,endDate) {
 }
 
 function getTaskCount(instanceId) {
+	if (!document.jsonLoaded)
+		throw "JSON must be loaded first";
 	count = 0;
 	for (index = 0; index < document.jsonData.length; index++) {
 		task = document.jsonData[index];
@@ -70,6 +76,8 @@ function getTaskCount(instanceId) {
 }
 
 function getMostRecentTask(instanceId) {
+	if (!document.jsonLoaded)
+		throw "JSON must be loaded first";
 	name = null;
 	mostRecent = 0;
 	for (index = 0; index < document.jsonData.length; index++) {
