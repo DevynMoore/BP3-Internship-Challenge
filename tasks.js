@@ -38,3 +38,23 @@ function getTasksOnDate(date) {
 	}
 	return results;
 }
+
+function getTasksBetweenDates(startDate,endDate) {
+	results = [];
+	for (index = 0; index < document.jsonData.length; index++) {
+		task = document.jsonData[index];
+		createDate = new Date(task.createDate);
+		if ((createDate.setUTCHours(0,0,0,0) >= startDate.setUTCHours(0,0,0,0)) && (createDate.setUTCHours(0,0,0,0) < endDate.setUTCHours(0,0,0,0)))
+		{
+			results.push(task);
+		}
+		else if (task.closeDate){
+			closeDate = new Date(task.closeDate);
+			if ((closeDate.setUTCHours(0,0,0,0) >= startDate.setUTCHours(0,0,0,0)) && (closeDate.setUTCHours(0,0,0,0) < endDate.setUTCHours(0,0,0,0)))
+			{
+				results.push(task);
+			}
+		}
+	}
+	return results;
+}
